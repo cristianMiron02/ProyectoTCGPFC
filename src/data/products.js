@@ -6,6 +6,7 @@ export const products = [
     imagen: "",
     fecha: "2025",
     categoria: "Coche",
+    destacado: true,
     descripcion: "Un coche deportivo de pura raza, el GR Supra ha sido diseñado con una actitud sin concesiones. Ajustado para ofrecer una experiencia de conducción llena de sentimientos, totalmente placentera, y sobre todo muy emocionante."
 },
 {
@@ -15,6 +16,7 @@ export const products = [
     imagen: "",
     fecha: "2025",
     categoria: "Coche",
+    destacado: true,
     descripcion: ""
 }, 
 {
@@ -24,6 +26,7 @@ export const products = [
     imagen: "",
     fecha: "2020",
     categoria: "moto",
+    destacado: true,
     descrpcion: ""
 },
 {
@@ -33,10 +36,7 @@ export const products = [
     imagen: "",
     fecha: "2025",
     categoria: "Parachoques Delantero",
+    destacado: false,
     descripcion: "Parachoques delantero en buen estado"
-},
-{
-    id: 5,
-    
 }
 ];
