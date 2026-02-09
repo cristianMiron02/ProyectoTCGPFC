@@ -6,6 +6,7 @@ import Catalog from "./pages/Catalog.jsx";
 import ProductDetail from "./pages/ProductDetails.jsx";
 import Cart from "./pages/Cart.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Login from "./pages/Login.jsx";
 import './App.css'
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/product/:id" element={<ProductDetail />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/login" element={<Login />} />
       </Route>
     </Routes>
   );

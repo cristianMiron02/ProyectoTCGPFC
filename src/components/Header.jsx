@@ -1,39 +1,87 @@
-import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
+    import { Link, NavLink, useNavigate, createSearchParams } from "react-router-dom";
+    import { useEffect, useState } from "react";
+    import { loginFake, logoutFake, isLoggedIn } from "../auth/auth.js";
 
-export default function Header(){
-    const[q, setQ] = useState("");
+    export default function Header() {
     const navigate = useNavigate();
+    const [query, setQuery] = useState("");
+    const [logged, setLogged] = useState(isLoggedIn());
 
-    function onSubmit(e){
+    // Mantener estado sincronizado
+    useEffect(() => {
+        setLogged(isLoggedIn());
+    }, []);
+
+    function handleSearch(e) {
         e.preventDefault();
-        const query = q.trim();
+        const q = query.trim();
 
         navigate({
-            pathname: "/catalog",
-            search: query ? `?${createSearchParams({ q: query })}` : ""
+        pathname: "/catalog",
+        search: q ? `?${createSearchParams({ q })}` : ""
         });
+
+        setQuery("");
     }
+
     return (
-        <nav className = "navbar navbar-expand-lg navbar-light bg-light border-botton">
-            <div className = "container">
-                <Link className = "navbar-brand fw-bold" to = "/">
-                    TiendaReact
-                </Link>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
+        <div className="container">
+            <Link className="navbar-brand fw-bold" to="/">
+            TiendaReact
+            </Link>
 
-                <div className = "d-flex gap-2 align-items-center ms-auto">
-                    <form className = "d-flex" onSubmit = {onSubmit}>
-                        <input className="form-control form-control-sm" placeholder="Buscar productos" value={q} onChange={(e) => setQ(e.target.value)}/>
-                        <button className = "btn btn-sm btn-primary ms-2" type = "submit"> Buscar </button>                    
-                    </form>
+            <div className="d-flex gap-2 align-items-center ms-auto">
+            {/* BUSCADOR */}
+            <form className="d-flex" onSubmit={handleSearch}>
+                <input
+                className="form-control form-control-sm"
+                placeholder="Buscar productos"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                />
+                <button className="btn btn-sm btn-primary ms-2" type="submit">
+                Buscar
+                </button>
+            </form>
 
-                    <div className="navbar-nav ms-3">
-                        <NavLink className="nav-link" to="/">Inicio</NavLink>
-                        <NavLink className="nav-link" to="/catalog">Productos</NavLink>
-                        <NavLink className="nav-link" to="/cart">Carrito</NavLink>
-                    </div>
-                </div>
+            <div className="navbar-nav ms-3">
+                <NavLink className="nav-link" to="/">
+                Inicio
+                </NavLink>
+                <NavLink className="nav-link" to="/catalog">
+                Productos
+                </NavLink>
+                <NavLink className="nav-link" to="/cart">
+                Carrito
+                </NavLink>
             </div>
+
+            {/* LOGIN / LOGOUT */}
+            {logged ? (
+                <button
+                className="btn btn-sm btn-outline-danger ms-2"
+                onClick={() => {
+                    logoutFake();
+                    setLogged(false);
+                    navigate("/");
+                }}
+                >
+                Cerrar sesión
+                </button>
+            ) : (
+                <button
+                className="btn btn-sm btn-outline-success ms-2"
+                onClick={() => {
+                    loginFake();
+                    setLogged(true);
+                }}
+                >
+                Iniciar sesión
+                </button>
+            )}
+            </div>
+        </div>
         </nav>
     );
-}
+    }
