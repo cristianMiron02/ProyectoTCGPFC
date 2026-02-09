@@ -1,15 +1,15 @@
     import { useParams, Link, useNavigate } from "react-router-dom";
     import { products } from "../data/products.js";
     import { isLoggedIn } from "../auth/auth.js";
+    import { useCart } from "../cart/CartContext.jsx";
 
     export default function ProductDetails() {
     const { id } = useParams();
     const navigate = useNavigate();
 
-    // ✅ OJO: era products.find, no product.find
-    const product = products.find((p) => String(p.id) === String(id));
+    const { addToCart } = useCart();
 
-    // ✅ estado real (simulado) desde auth.js
+    const product = products.find((p) => String(p.id) === String(id));
     const logged = isLoggedIn();
 
     if (!product) {
@@ -55,9 +55,17 @@
 
             <div className="mt-3">
                 {logged ? (
-                <button className="btn btn-success">Añadir al carrito</button>
+                <button
+                    className="btn btn-success"
+                    onClick={() => addToCart(product, 1)}
+                >
+                    Añadir al carrito
+                </button>
                 ) : (
-                <button className="btn btn-warning" onClick={() => navigate("/login")}>
+                <button
+                    className="btn btn-warning"
+                    onClick={() => navigate("/login")}
+                >
                     Iniciar sesión para comprar
                 </button>
                 )}

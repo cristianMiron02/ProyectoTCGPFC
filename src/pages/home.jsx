@@ -7,10 +7,10 @@ const destacado = products.filter((p) => p.destacado).slice(0, 8);
 
 return(
     <>
-    <div className = "container py-4">
+    <div className = "container-fluid py-4">
 
         <div className = "row g-4 align-items-stretch">
-            <div className = "col-12 col-lg-7">
+            <div className = "col-12 ">
                 <div className = "p-4 border rounded-3 h-100">
                     <h1 className = "mb-3">Bienvenido a mi tienda</h1>
                     <p className = "text-muted">

@@ -26,13 +26,13 @@
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
-        <div className="container">
+        <div className="container-fluid px-4">
             <Link className="navbar-brand fw-bold" to="/">
             TiendaReact
             </Link>
 
             <div className="d-flex gap-2 align-items-center ms-auto">
-            {/* BUSCADOR */}
+
             <form className="d-flex" onSubmit={handleSearch}>
                 <input
                 className="form-control form-control-sm"
@@ -57,7 +57,6 @@
                 </NavLink>
             </div>
 
-            {/* LOGIN / LOGOUT */}
             {logged ? (
                 <button
                 className="btn btn-sm btn-outline-danger ms-2"
