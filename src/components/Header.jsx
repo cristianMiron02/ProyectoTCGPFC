@@ -7,7 +7,6 @@
     const [query, setQuery] = useState("");
     const [logged, setLogged] = useState(isLoggedIn());
 
-    // Mantener estado sincronizado
     useEffect(() => {
         setLogged(isLoggedIn());
     }, []);

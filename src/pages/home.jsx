@@ -10,11 +10,11 @@ return(
     <div className = "container-fluid py-4">
 
         <div className = "row g-4 align-items-stretch">
-            <div className = "col-12 ">
+            <div className = "col-12    ">
                 <div className = "p-4 border rounded-3 h-100">
                     <h1 className = "mb-3">Bienvenido a mi tienda</h1>
                     <p className = "text-muted">
-                        Una tienda dedicada a la venta de coches, motos y partes de estos.
+                        Una tienda dedicada a la venta de cartas coleccionables de Pokémon, One Piece, Gundam y Riftbound.
                     </p>
                 </div>
             </div>

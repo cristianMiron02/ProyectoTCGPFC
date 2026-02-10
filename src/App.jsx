@@ -8,6 +8,9 @@ import Cart from "./pages/Cart.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
+import PublicOnlyRoute from "./routes/PublicOnlyRoute.jsx";
+
+
 import './App.css'
 
 function App() {
@@ -20,6 +23,9 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
+        <Route element={<PublicOnlyRoute />}>
+          <Route path="/login" element={<Login />} />
+        </Route>
 
         <Route element={<ProtectedRoute />}>
           <Route path="/cart" element={<Cart />} />
