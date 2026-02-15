@@ -1,6 +1,7 @@
     import { Link, NavLink, useNavigate, createSearchParams } from "react-router-dom";
     import { useEffect, useState } from "react";
-    import { loginFake, logoutFake, isLoggedIn } from "../auth/auth.js";
+    import { logout, isLoggedIn } from "../auth/auth.js";
+
 
     export default function Header() {
     const navigate = useNavigate();
@@ -46,38 +47,39 @@
 
             <div className="navbar-nav ms-3">
                 <NavLink className="nav-link" to="/">
-                Inicio
+                    Inicio
                 </NavLink>
                 <NavLink className="nav-link" to="/catalog">
-                Productos
+                    Productos
                 </NavLink>
                 <NavLink className="nav-link" to="/cart">
-                Carrito
+                    Carrito
+                </NavLink>
+                <NavLink className="nav-link" to="/register">
+                    Registro
                 </NavLink>
             </div>
 
             {logged ? (
                 <button
-                className="btn btn-sm btn-outline-danger ms-2"
-                onClick={() => {
-                    logoutFake();
-                    setLogged(false);
-                    navigate("/");
-                }}
+                    className="btn btn-sm btn-outline-danger ms-2"
+                    onClick={() => {
+                        logout();
+                        setLogged(false);
+                        navigate("/");
+                    }}
                 >
-                Cerrar sesión
+                    Cerrar sesión
                 </button>
             ) : (
                 <button
-                className="btn btn-sm btn-outline-success ms-2"
-                onClick={() => {
-                    loginFake();
-                    setLogged(true);
-                }}
+                    className="btn btn-sm btn-outline-success ms-2"
+                    onClick={() => navigate("/login")}
                 >
-                Iniciar sesión
+                    Iniciar sesión
                 </button>
             )}
+
             </div>
         </div>
         </nav>

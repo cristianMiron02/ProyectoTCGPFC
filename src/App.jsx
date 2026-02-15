@@ -9,6 +9,8 @@ import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./routes/PublicOnlyRoute.jsx";
+import Register from "./pages/Register.jsx";
+
 
 
 import './App.css'
@@ -25,8 +27,8 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Route>
-
         <Route element={<ProtectedRoute />}>
           <Route path="/cart" element={<Cart />} />
         </Route>
