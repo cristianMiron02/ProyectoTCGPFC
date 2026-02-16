@@ -10,13 +10,21 @@ import Login from "./pages/Login.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./routes/PublicOnlyRoute.jsx";
 import Register from "./pages/Register.jsx";
+import { useEffect } from "react";
+import { seedIfEmpty } from "./data/seedIfEmpty.js";
+
 
 
 
 import './App.css'
 
 function App() {
-  return (
+
+  useEffect(() => {
+      seedIfEmpty();
+    }, []);
+  
+  return (    
     <Routes>
       <Route element = {<MainLayout />}>
         <Route path="/" element={<Home />} />
@@ -34,6 +42,7 @@ function App() {
         </Route>
       </Route> 
     </Routes>
+
   );
 }
 

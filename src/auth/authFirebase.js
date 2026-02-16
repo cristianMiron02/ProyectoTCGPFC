@@ -2,17 +2,12 @@ import { auth } from "../firebase/firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut,
-  sendEmailVerification
+  signOut
 } from "firebase/auth";
 
 export async function registerWithEmail(email, password) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
-
-  
-  await sendEmailVerification(cred.user);
-
-  return cred.user;
+  return cred.user; 
 }
 
 export async function loginWithEmail(email, password) {

@@ -1,6 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { isLoggedIn } from "../auth/auth.js";
+import { useAuth } from "../auth/useAuth.js";
 
-export default function PublicOnlyRoute(){
-    return isLoggedIn() ? <Navigate to = "/" replace/> : <Outlet />;
+export default function PublicOnlyRoute() {
+  const { user, loading } = useAuth();
+  if (loading) return null;
+  return user ? <Navigate to="/" replace /> : <Outlet />;
 }
