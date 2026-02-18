@@ -11,19 +11,13 @@ import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./routes/PublicOnlyRoute.jsx";
 import Register from "./pages/Register.jsx";
 import { useEffect } from "react";
-import { seedIfEmpty } from "./data/seedIfEmpty.js";
 
 
 
 
 import './App.css'
 
-function App() {
-
-  useEffect(() => {
-      seedIfEmpty();
-    }, []);
-  
+function App() { 
   return (    
     <Routes>
       <Route element = {<MainLayout />}>
@@ -42,8 +36,6 @@ function App() {
         </Route>
       </Route> 
     </Routes>
-
   );
 }
-
 export default App

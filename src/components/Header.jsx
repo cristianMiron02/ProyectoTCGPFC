@@ -50,12 +50,6 @@ export default function Header() {
             <NavLink className="nav-link" to="/cart">
               Carrito
             </NavLink>
-
-            {!loading && !user && (
-              <NavLink className="nav-link" to="/register">
-                Registro
-              </NavLink>
-            )}
           </div>
 
           {!loading && user ? (
