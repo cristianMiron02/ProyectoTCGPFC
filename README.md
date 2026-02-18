@@ -1,16 +1,50 @@
-# React + Vite
+# 🃏 Tienda TCG Online – React + Firebase
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Aplicación web de venta de cartas coleccionables (Pokémon, One Piece, Gundam y Riftbound) desarrollada con **React (Vite)** en el frontend y **Firebase (Authentication + Firestore)** como backend serverless.
 
-Currently, two official plugins are available:
+La aplicación permite visualizar productos, registrarse, iniciar sesión, gestionar un carrito y realizar búsquedas dinámicas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+---
 
-## React Compiler
+# 🚀 Tecnologías utilizadas
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- ⚛ React 18
+- ⚡ Vite
+- 🎨 Bootstrap 5
+- 🔥 Firebase Authentication
+- 🗄 Firestore Database
+- 🔀 React Router DOM
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# 📦 Funcionalidades implementadas
+
+## 👤 Autenticación
+- Registro de usuario con:
+  - Nombre
+  - Apellidos
+  - Email
+  - Contraseña
+  - Fecha de nacimiento (validación +18)
+- Inicio de sesión con Firebase Authentication
+- Protección de rutas (carrito solo visible para usuarios logueados)
+- Cierre de sesión dinámico
+
+## 🛍 Productos
+- Catálogo dinámico cargado desde Firestore
+- Página de detalles de producto
+- Búsqueda por nombre o descripción
+- Productos destacados en la página principal
+- Diseño responsive (adaptado a móvil, tablet y escritorio)
+
+## 🛒 Carrito
+- Añadir productos
+- Modificar cantidad
+- Eliminar producto con confirmación
+- Cálculo automático del total
+
+---
+
+La cuenta de administrador es:
+Correo: admin@tienda-react.com
+Contraseña: 1234567890
