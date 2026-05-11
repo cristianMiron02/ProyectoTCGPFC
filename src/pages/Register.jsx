@@ -24,6 +24,7 @@ export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [tipoCuenta, setTipoCuenta] = useState("");
 
   const [error, setError] = useState("");
   const age = useMemo(() => calcAge(fechaNacimiento), [fechaNacimiento]);
@@ -38,7 +39,8 @@ export default function Register() {
       !email.trim() ||
       !password.trim() ||
       !confirmPassword.trim() ||
-      !fechaNacimiento
+      !fechaNacimiento ||
+      !tipoCuenta
     ) {
       setError("Completa todos los campos.");
       return;
@@ -60,7 +62,7 @@ export default function Register() {
     }
 
     try {
-      await registerWithEmail(email, password);
+      await registerWithEmail(email, password, {nombre, apellidos, fechaNacimiento, tipoCuenta});
       navigate("/", { replace: true });
     } catch (err) {
       setError(err.message || "Error al registrar.");
@@ -135,6 +137,16 @@ export default function Register() {
               <div className="form-text">
                 Debe coincidir con la contraseña anterior.
               </div>
+            </div>
+
+            <div>
+              <label className="form-label">Tipo de cuenta</label>
+              <select className="form-select" value={tipoCuenta} echange={(e) => setTipoCuenta(e.target.value)}>
+                <option value="">Selecciona un tipo de cuenta</option>
+                <option value="buyer">Comprador</option>
+                <option value="seller">Vendedor</option>
+                <option value="both">Comprador/Vendedor</option>
+              </select>
             </div>
           </div>
 

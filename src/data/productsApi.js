@@ -1,5 +1,5 @@
 import { db } from "../firebase/firebase.js";
-import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 
 
 export async function fetchProducts() {
@@ -22,4 +22,17 @@ export async function fetchProductById(id) {
     id: snap.id,
     ...snap.data()
   };
+}
+
+export async function fetchOffersByProductId(productId){
+  const q = query(
+    collection(db, "offers")
+  );
+
+  const snap = await getDocs(q);
+
+  return snap.docs.map((docu) => ({
+    id: docu.id,
+    ...docu.data()
+  }));
 }
