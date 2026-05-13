@@ -3,6 +3,8 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import { fetchProductById, fetchOffersByProductId } from "../data/productsApi.js";
 import { useCart } from "../cart/CartContext.jsx";
 import { useAuth } from "../auth/useAuth.js";
+import { doc, getDoc } from "firebase/firestore";
+import { db } from "../firebase/firebase.js";
 
 export default function ProductDetails() {
   const { id } = useParams();
@@ -13,6 +15,7 @@ export default function ProductDetails() {
 
   const [product, setProduct] = useState(null);
   const [offers, setOffers] = useState([]);
+  const [tipoCuenta, setTipoCuenta] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -23,6 +26,14 @@ export default function ProductDetails() {
 
         const productOffers = await fetchOffersByProductId(id);
         setOffers(productOffers);
+        if (user) {
+          const userRef = doc(db, "users", user.uid);
+          const userSnap = await getDoc(userRef);
+
+          if (userSnap.exists()) {
+            setTipoCuenta(userSnap.data().tipoCuenta);
+          }
+        }
       } catch (err) {
         console.error("Error cargando producto u ofertas:", err);
       } finally {
@@ -83,6 +94,14 @@ export default function ProductDetails() {
 
       <div className="mt-5">
         <h2 className="mb-3">Ofertas disponibles</h2>
+
+        {(tipoCuenta === "seller" || tipoCuenta === "both") && (
+          <div className="mb-3">
+            <button className="btn btn-primary" onClick={() => navigate(`/create-offer/${product.id}`)}>
+              Crear oferta
+            </button>
+          </div>
+        )}
 
         {offers.length === 0 ? (
           <div className="alert alert-info">
