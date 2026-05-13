@@ -1,13 +1,25 @@
-import { auth } from "../firebase/firebase.js";
+import { auth, db } from "../firebase/firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut
 } from "firebase/auth";
+import { doc, setDoc } from "firebase/firestore";
 
-export async function registerWithEmail(email, password) {
+export async function registerWithEmail(email, password, userData) {
   const cred = await createUserWithEmailAndPassword(auth, email, password);
-  return cred.user; 
+
+  await setDoc(doc(db, "users", cred.user.uid), {
+    uid: cred.user.uid,
+    email: cred.user.email,
+    nombre: userData.nombre,
+    apellidos: userData.apellidos,
+    fechaNacimiento: userData.fechaNacimiento,
+    tipoCuenta: userData.tipoCuenta,
+    createdAt: new Date().toISOString()
+  });
+
+  return cred.user;
 }
 
 export async function loginWithEmail(email, password) {
