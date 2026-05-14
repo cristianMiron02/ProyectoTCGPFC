@@ -12,10 +12,12 @@ export async function registerWithEmail(email, password, userData) {
   await setDoc(doc(db, "users", cred.user.uid), {
     uid: cred.user.uid,
     email: cred.user.email,
+    username: userData.username,
     nombre: userData.nombre,
     apellidos: userData.apellidos,
     fechaNacimiento: userData.fechaNacimiento,
     tipoCuenta: userData.tipoCuenta,
+    nacionalidad: userData.nacionalidad,
     createdAt: new Date().toISOString()
   });
 

@@ -21,7 +21,7 @@ export function CartProvider({children}){
 
     function addToCart(product, qty = 1){
         setItems((prev) => {
-            const found = prev.find((i) => i.id === product.id);
+            const found = prev.find((i) => i.offerId === product.offerId);
             if(found){
                 return prev.map((i) =>
                     i.id === product.id ? { ...i, qty: i.qty + qty} : i
@@ -31,11 +31,11 @@ export function CartProvider({children}){
             return [
                 ...prev,
                 {
-                    id: product.id,
-                    nombre: product.nombre,
-                    precio: Number(product.precio),
-                    imagen: product.imagen,
-                    categoria: product.categoria,
+                    ...product,
+                    offerId: product.offerId,
+                    sellerId: product.sellerId,
+                    sellerName: product.sellerName,
+                    estado: product.estado,
                     qty
                 }
             ];

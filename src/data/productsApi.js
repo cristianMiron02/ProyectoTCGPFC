@@ -1,6 +1,12 @@
 import { db } from "../firebase/firebase.js";
-import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
-
+import {
+  collection,
+  getDocs,
+  doc,
+  getDoc,
+  query,
+  where
+} from "firebase/firestore";
 
 export async function fetchProducts() {
   const snap = await getDocs(collection(db, "products"));
@@ -10,7 +16,6 @@ export async function fetchProducts() {
     ...docu.data()
   }));
 }
-
 
 export async function fetchProductById(id) {
   const ref = doc(db, "products", id);
@@ -24,9 +29,10 @@ export async function fetchProductById(id) {
   };
 }
 
-export async function fetchOffersByProductId(productId){
+export async function fetchOffersByProductId(productId) {
   const q = query(
-    collection(db, "offers")
+    collection(db, "offers"),
+    where("productId", "==", productId)
   );
 
   const snap = await getDocs(q);

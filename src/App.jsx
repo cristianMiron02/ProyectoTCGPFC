@@ -10,6 +10,8 @@ import Login from "./pages/Login.jsx";
 import ProtectedRoute from "./routes/ProtectedRoute.jsx";
 import PublicOnlyRoute from "./routes/PublicOnlyRoute.jsx";
 import Register from "./pages/Register.jsx";
+import CreateOffer from "./pages/CreateOffer.jsx";
+import EditOffer from "./pages/EditOffer.jsx";
 import { useEffect } from "react";
 
 
@@ -34,6 +36,8 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route path="/cart" element={<Cart />} />
         </Route>
+        <Route path="/create-offer/:productId" element={<CreateOffer />} />
+        <Route path="/edit-offer/:offerId" element={<EditOffer />} />
       </Route> 
     </Routes>
   );

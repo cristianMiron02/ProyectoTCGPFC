@@ -25,6 +25,8 @@ export default function Register() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [tipoCuenta, setTipoCuenta] = useState("");
+  const [username, setUsername] = useState("");
+  const [nacionalidad, setNacionalidad] = useState("");
 
   const [error, setError] = useState("");
   const age = useMemo(() => calcAge(fechaNacimiento), [fechaNacimiento]);
@@ -38,9 +40,12 @@ export default function Register() {
       !apellidos.trim() ||
       !email.trim() ||
       !password.trim() ||
+      !nacionalidad ||
       !confirmPassword.trim() ||
       !fechaNacimiento ||
+      !username.trim() ||
       !tipoCuenta
+      
     ) {
       setError("Completa todos los campos.");
       return;
@@ -63,10 +68,12 @@ export default function Register() {
 
     try {
       await registerWithEmail(email, password, {
+        username,
         nombre,
         apellidos,
         fechaNacimiento,
-        tipoCuenta
+        tipoCuenta,
+        nacionalidad
       });
 
       navigate("/", { replace: true });
@@ -83,6 +90,16 @@ export default function Register() {
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit} style={{ maxWidth: 520 }}>
+          <div className="col-12">
+            <label className="form-label">Nombre de usuario</label>
+              <input
+                className="form-control"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="Ej: cristian_cards"
+              />
+          </div>
+
           <div className="row g-3">
             <div className="col-12 col-md-6">
               <label className="form-label">Nombre</label>
@@ -127,6 +144,27 @@ export default function Register() {
               <div className="form-text">
                 Valor seleccionado: {tipoCuenta || "ninguno"}
               </div>
+            </div>
+
+            <div className="col-12">
+              <label className="form-label">Nacionalidad</label>
+
+              <select
+              className="form-select"
+              value={nacionalidad}
+              onChange={(e) => setNacionalidad(e.target.value)}
+              >
+                <option value="">Selecciona nacionalidad</option>
+
+                <option value="España">España</option>
+                <option value="Portugal">Portugal</option>
+                <option value="Francia">Francia</option>
+                <option value="Italia">Italia</option>
+                <option value="Alemania">Alemania</option>
+                <option value="Reino Unido">Reino Unido</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="Japón">Japón</option>
+              </select>
             </div>
 
             <div className="col-12 col-md-6">

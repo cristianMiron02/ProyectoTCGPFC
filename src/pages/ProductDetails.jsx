@@ -1,48 +1,118 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
-import { fetchProductById, fetchOffersByProductId } from "../data/productsApi.js";
-import { useCart } from "../cart/CartContext.jsx";
-import { useAuth } from "../auth/useAuth.js";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc } from "firebase/firestore";
+
 import { db } from "../firebase/firebase.js";
+import {
+  fetchProductById,
+  fetchOffersByProductId
+} from "../data/productsApi.js";
+import { useAuth } from "../auth/useAuth.js";
+import { useCart } from "../cart/CartContext.jsx";
+
+function getFlagUrl(country) {
+  switch (country) {
+    case "España":
+      return "https://flagcdn.com/w40/es.png";
+
+    case "Portugal":
+      return "https://flagcdn.com/w40/pt.png";
+
+    case "Francia":
+      return "https://flagcdn.com/w40/fr.png";
+
+    case "Italia":
+      return "https://flagcdn.com/w40/it.png";
+
+    case "Alemania":
+      return "https://flagcdn.com/w40/de.png";
+
+    case "Reino Unido":
+      return "https://flagcdn.com/w40/gb.png";
+
+    case "Estados Unidos":
+      return "https://flagcdn.com/w40/us.png";
+
+    case "Japón":
+      return "https://flagcdn.com/w40/jp.png";
+
+    default:
+      return "";
+  }
+}
 
 export default function ProductDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
-
+  const { user } = useAuth();
   const { addToCart } = useCart();
-  const { user, loading: authLoading } = useAuth();
 
   const [product, setProduct] = useState(null);
   const [offers, setOffers] = useState([]);
   const [tipoCuenta, setTipoCuenta] = useState(null);
+  const [offerQty, setOfferQty] = useState({});
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    async function load() {
-      try {
-        const p = await fetchProductById(id);
-        setProduct(p);
+  async function loadData() {
+    try {
+      setLoading(true);
 
-        const productOffers = await fetchOffersByProductId(id);
-        setOffers(productOffers);
-        if (user) {
-          const userRef = doc(db, "users", user.uid);
-          const userSnap = await getDoc(userRef);
+      const p = await fetchProductById(id);
+      setProduct(p);
 
-          if (userSnap.exists()) {
-            setTipoCuenta(userSnap.data().tipoCuenta);
-          }
+      const productOffers = await fetchOffersByProductId(id);
+      setOffers(productOffers);
+
+      if (user) {
+        const userRef = doc(db, "users", user.uid);
+        const userSnap = await getDoc(userRef);
+
+        if (userSnap.exists()) {
+          setTipoCuenta(userSnap.data().tipoCuenta);
         }
-      } catch (err) {
-        console.error("Error cargando producto u ofertas:", err);
-      } finally {
-        setLoading(false);
+      } else {
+        setTipoCuenta(null);
       }
+    } catch (err) {
+      console.error("Error cargando producto u ofertas:", err);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (id) loadData();
+  }, [id, user]);
+
+  async function handleDeleteOffer(offerId) {
+    const ok = window.confirm("¿Seguro que quieres borrar esta oferta?");
+    if (!ok) return;
+
+    try {
+      await deleteDoc(doc(db, "offers", offerId));
+      await loadData();
+    } catch (err) {
+      console.error("Error borrando oferta:", err);
+      alert("No se pudo borrar la oferta.");
+    }
+  }
+
+  function handleQtyChange(offer, value) {
+    let qty = Number(value);
+
+    if (!Number.isFinite(qty) || qty < 1) {
+      qty = 1;
     }
 
-    if (id) load();
-  }, [id]);
+    if (qty > Number(offer.stock)) {
+      qty = Number(offer.stock);
+    }
+
+    setOfferQty((prev) => ({
+      ...prev,
+      [offer.id]: qty
+    }));
+  }
 
   if (loading) {
     return <div className="container-fluid py-4">Cargando producto...</div>;
@@ -58,8 +128,6 @@ export default function ProductDetails() {
       </div>
     );
   }
-
-  const logged = !!user;
 
   return (
     <div className="container-fluid py-4">
@@ -93,15 +161,18 @@ export default function ProductDetails() {
       </div>
 
       <div className="mt-5">
-        <h2 className="mb-3">Ofertas disponibles</h2>
+        <div className="d-flex align-items-center justify-content-between mb-3">
+          <h2 className="mb-0">Ofertas disponibles</h2>
 
-        {(tipoCuenta === "seller" || tipoCuenta === "both") && (
-          <div className="mb-3">
-            <button className="btn btn-primary" onClick={() => navigate(`/create-offer/${product.id}`)}>
+          {(tipoCuenta === "seller" || tipoCuenta === "both") && (
+            <button
+              className="btn btn-primary"
+              onClick={() => navigate(`/create-offer/${product.id}`)}
+            >
               Crear oferta
             </button>
-          </div>
-        )}
+          )}
+        </div>
 
         {offers.length === 0 ? (
           <div className="alert alert-info">
@@ -113,62 +184,141 @@ export default function ProductDetails() {
               <thead>
                 <tr>
                   <th>Vendedor</th>
+                  <th>Nacionalidad</th>
+                  <th>Idioma</th>
                   <th>Estado</th>
                   <th className="text-end">Precio</th>
                   <th className="text-center">Stock</th>
-                  <th>Envío</th>
-                  <th className="text-end">Acción</th>
+                  <th className="text-center">Cantidad</th>
+                  <th className="text-end">Acciones</th>
                 </tr>
               </thead>
 
               <tbody>
-                {offers.map((offer) => (
-                  <tr key={offer.id}>
-                    <td>{offer.sellerName}</td>
-                    <td>{offer.estado}</td>
-                    <td className="text-end">
-                      {Number(offer.precio).toLocaleString("es-ES")} €
-                    </td>
-                    <td className="text-center">{offer.stock}</td>
-                    <td>{offer.envio}</td>
-                    <td className="text-end">
-                      {logged ? (
-                        <button
-                          className="btn btn-sm btn-success"
-                          disabled={Number(offer.stock) <= 0}
-                          onClick={() =>
-                            addToCart(
-                              {
-                                ...product,
-                                precio: Number(offer.precio),
-                                sellerName: offer.sellerName,
-                                offerId: offer.id
-                              },
-                              1
-                            )
-                          }
-                        >
-                          Añadir al carrito
-                        </button>
-                      ) : (
-                        <button
-                          className="btn btn-sm btn-warning"
-                          onClick={() => navigate("/login")}
-                        >
-                          Iniciar sesión
-                        </button>
-                      )}
-                    </td>
-                  </tr>
-                ))}
+                {offers.map((offer) => {
+                  const isOwner = user && user.uid === offer.sellerId;
+                  const stock = Number(offer.stock);
+                  const qty = offerQty[offer.id] || 1;
+
+                  return (
+                    <tr key={offer.id}>
+                      <td>{offer.sellerName || "-"}</td>
+
+                      <td className="text-center">
+                        <img
+                          src={getFlagUrl(offer.sellerNationality)}
+                          alt={offer.sellerNationality}
+                          style={{
+                            width: 28,
+                            height: 20,
+                            objectFit: "cover",
+                            borderRadius: 2
+                          }}
+                          />
+                      </td>
+
+                      <td className="text-center">
+                        <img
+                          src={getFlagUrl(offer.idiomaCarta)}
+                          alt={offer.idiomaCarta}
+                          style={{
+                            width: 28,
+                            height: 20,
+                            objectFit: "cover",
+                            borderRadius: 2
+                          }}
+                        />
+                      </td>
+
+                      <td>{offer.estado || "-"}</td>
+
+                      <td className="text-end">
+                        {Number(offer.precio).toLocaleString("es-ES")} €
+                      </td>
+
+                      <td className="text-center">{offer.stock}</td>
+
+                      <td className="text-center">
+                        {stock > 1 ? (
+                          <input
+                            type="number"
+                            className="form-control form-control-sm text-center"
+                            style={{
+                              width: 80,
+                              marginLeft: "auto",
+                              marginRight: "auto"
+                            }}
+                            min="1"
+                            max={stock}
+                            value={qty}
+                            onChange={(e) =>
+                              handleQtyChange(offer, e.target.value)
+                            }
+                          />
+                        ) : (
+                          <span>1</span>
+                        )}
+                      </td>
+
+                      <td className="text-end">
+                        <div className="d-flex justify-content-end gap-2">
+                          {user ? (
+                            <button
+                              className="btn btn-sm btn-success"
+                              disabled={stock <= 0}
+                              onClick={() =>
+                                addToCart(
+                                  {
+                                    ...product,
+                                    precio: Number(offer.precio),
+                                    offerId: offer.id,
+                                    sellerId: offer.sellerId,
+                                    sellerName: offer.sellerName,
+                                    sellerNationality: offer.sellerNationality,
+                                    idiomaCarta: offer.idiomaCarta,
+                                    estado: offer.estado
+                                  },
+                                  qty
+                                )
+                              }
+                            >
+                              Añadir al carrito
+                            </button>
+                          ) : (
+                            <button
+                              className="btn btn-sm btn-warning"
+                              onClick={() => navigate("/login")}
+                            >
+                              Iniciar sesión
+                            </button>
+                          )}
+
+                          {isOwner && (
+                            <>
+                              <button
+                                className="btn btn-sm btn-outline-primary"
+                                onClick={() =>
+                                  navigate(`/edit-offer/${offer.id}`)
+                                }
+                              >
+                                Editar
+                              </button>
+
+                              <button
+                                className="btn btn-sm btn-outline-danger"
+                                onClick={() => handleDeleteOffer(offer.id)}
+                              >
+                                Borrar
+                              </button>
+                            </>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
-          </div>
-        )}
-
-        {authLoading && (
-          <div className="text-muted small mt-2">
-            Comprobando sesión...
           </div>
         )}
       </div>
