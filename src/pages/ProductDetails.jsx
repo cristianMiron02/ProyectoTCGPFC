@@ -5,35 +5,56 @@ import { doc, getDoc, deleteDoc } from "firebase/firestore";
 import { db } from "../firebase/firebase.js";
 import {
   fetchProductById,
-  fetchOffersByProductId
+  fetchOffersByProductId,
+  fetchOrdersByProductId
 } from "../data/productsApi.js";
+
 import { useAuth } from "../auth/useAuth.js";
 import { useCart } from "../cart/CartContext.jsx";
+
+import {
+  LineChart,
+  Line,
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer
+} from "recharts";
 
 function getFlagUrl(country) {
   switch (country) {
     case "España":
+    case "Español":
       return "https://flagcdn.com/w40/es.png";
 
     case "Portugal":
+    case "Portugués":
       return "https://flagcdn.com/w40/pt.png";
 
     case "Francia":
+    case "Francés":
       return "https://flagcdn.com/w40/fr.png";
 
     case "Italia":
+    case "Italiano":
       return "https://flagcdn.com/w40/it.png";
 
     case "Alemania":
+    case "Alemán":
       return "https://flagcdn.com/w40/de.png";
 
     case "Reino Unido":
+    case "Inglés":
       return "https://flagcdn.com/w40/gb.png";
 
     case "Estados Unidos":
       return "https://flagcdn.com/w40/us.png";
 
     case "Japón":
+    case "Japonés":
       return "https://flagcdn.com/w40/jp.png";
 
     default:
@@ -51,6 +72,7 @@ export default function ProductDetails() {
   const [offers, setOffers] = useState([]);
   const [tipoCuenta, setTipoCuenta] = useState(null);
   const [offerQty, setOfferQty] = useState({});
+  const [salesData, setSalesData] = useState([]);
   const [loading, setLoading] = useState(true);
 
   async function loadData() {
@@ -63,6 +85,29 @@ export default function ProductDetails() {
       const productOffers = await fetchOffersByProductId(id);
       setOffers(productOffers);
 
+      const orders = await fetchOrdersByProductId(id);
+
+      const grouped = {};
+
+      orders.forEach((order) => {
+        const day = new Date(order.createdAt).toLocaleDateString("es-ES", {
+          weekday: "short"
+        });
+
+        if (!grouped[day]) {
+          grouped[day] = {
+            dia: day,
+            ventas: 0,
+            ingresos: 0
+          };
+        }
+
+        grouped[day].ventas += Number(order.qty);
+        grouped[day].ingresos += Number(order.total);
+      });
+
+      setSalesData(Object.values(grouped));
+
       if (user) {
         const userRef = doc(db, "users", user.uid);
         const userSnap = await getDoc(userRef);
@@ -74,7 +119,7 @@ export default function ProductDetails() {
         setTipoCuenta(null);
       }
     } catch (err) {
-      console.error("Error cargando producto u ofertas:", err);
+      console.error("Error cargando producto, ofertas o ventas:", err);
     } finally {
       setLoading(false);
     }
@@ -205,29 +250,37 @@ export default function ProductDetails() {
                       <td>{offer.sellerName || "-"}</td>
 
                       <td className="text-center">
-                        <img
-                          src={getFlagUrl(offer.sellerNationality)}
-                          alt={offer.sellerNationality}
-                          style={{
-                            width: 28,
-                            height: 20,
-                            objectFit: "cover",
-                            borderRadius: 2
-                          }}
+                        {getFlagUrl(offer.sellerNationality) ? (
+                          <img
+                            src={getFlagUrl(offer.sellerNationality)}
+                            alt={offer.sellerNationality}
+                            style={{
+                              width: 28,
+                              height: 20,
+                              objectFit: "cover",
+                              borderRadius: 2
+                            }}
                           />
+                        ) : (
+                          "-"
+                        )}
                       </td>
 
                       <td className="text-center">
-                        <img
-                          src={getFlagUrl(offer.idiomaCarta)}
-                          alt={offer.idiomaCarta}
-                          style={{
-                            width: 28,
-                            height: 20,
-                            objectFit: "cover",
-                            borderRadius: 2
-                          }}
-                        />
+                        {getFlagUrl(offer.idiomaCarta) ? (
+                          <img
+                            src={getFlagUrl(offer.idiomaCarta)}
+                            alt={offer.idiomaCarta}
+                            style={{
+                              width: 28,
+                              height: 20,
+                              objectFit: "cover",
+                              borderRadius: 2
+                            }}
+                          />
+                        ) : (
+                          "-"
+                        )}
                       </td>
 
                       <td>{offer.estado || "-"}</td>
@@ -320,6 +373,46 @@ export default function ProductDetails() {
               </tbody>
             </table>
           </div>
+        )}
+      </div>
+
+      <div className="mt-5">
+        <h2 className="mb-3">Estadísticas de ventas</h2>
+
+        {salesData.length === 0 ? (
+          <div className="alert alert-secondary">
+            Todavía no hay ventas registradas para esta carta.
+          </div>
+        ) : (
+          <>
+            <div className="p-4 border rounded-3 mb-4">
+              <h5>Unidades vendidas por día</h5>
+
+              <ResponsiveContainer width="100%" height={300}>
+                <BarChart data={salesData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" />
+                  <YAxis />
+                  <Tooltip />
+                  <Bar dataKey="ventas" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="p-4 border rounded-3">
+              <h5>Ingresos por día (€)</h5>
+
+              <ResponsiveContainer width="100%" height={300}>
+                <LineChart data={salesData}>
+                  <CartesianGrid strokeDasharray="3 3" />
+                  <XAxis dataKey="dia" />
+                  <YAxis />
+                  <Tooltip />
+                  <Line type="monotone" dataKey="ingresos" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
+          </>
         )}
       </div>
     </div>

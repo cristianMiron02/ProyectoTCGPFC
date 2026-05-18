@@ -23,6 +23,9 @@ export default function Header() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light border-bottom">
       <div className="container-fluid px-4">
+
+        <img src="/LogoTheGodCards.png" alt="Logo Tienda TCG" style={{width: 50, height: 50, objectFit: "contain"}}/>
+
         <Link className="navbar-brand fw-bold" to="/">
           TiendaReact
         </Link>

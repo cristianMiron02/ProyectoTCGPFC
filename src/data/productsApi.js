@@ -42,3 +42,17 @@ export async function fetchOffersByProductId(productId) {
     ...docu.data()
   }));
 }
+
+export async function fetchOrdersByProductId(productId) {
+  const q = query(
+    collection(db, "orders"),
+    where("productId", "==", productId)
+  );
+
+  const snap = await getDocs(q);
+
+  return snap.docs.map((docu) => ({
+    id: docu.id,
+    ...docu.data()
+  }));
+}
