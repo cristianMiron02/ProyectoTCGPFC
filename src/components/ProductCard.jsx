@@ -16,7 +16,7 @@ export default function ProductCard({ product }) {
     }
 
     return (
-        <div className="card h-100 shadow-sm">
+        <div className="card h-100 shadow-sm bg-dark text-white border-secondary">
         <div style={{ height: "250px", overflow: "hidden" }}>
             <img
             src={product.imagen}
@@ -30,13 +30,13 @@ export default function ProductCard({ product }) {
             <h5 className="card-title">{product.nombre}</h5>
             <p className="card-text mb-2">{product.categoria}</p>
 
-            <Link to={`/product/${product.id}`} className="btn btn-primary mt-auto">
-            Ver ofertas
+            <Link to={`/product/${product.id}`} className="btn" style={{backgroundColor: "#d4af37", borderColor: "#d4af37", color: "#000"}}>
+                Ver ofertas
             </Link>
 
             <button
             onClick={handleFavorite}
-            className="btn btn-light border rounded-circle position-absolute"
+            className="rounded-circle position-absolute"
             style={{
                 top: 10,
                 right: 10,
@@ -46,7 +46,11 @@ export default function ProductCard({ product }) {
                 alignItems: "center",
                 justifyContent: "center",
                 fontSize: "1.2rem",
-                zIndex: 10
+                zIndex: 10,
+
+                backgroundColor: "#212529",
+                borderColor: "#212529",
+                color: "#ff4d6d"
             }}
             >
             ❤️

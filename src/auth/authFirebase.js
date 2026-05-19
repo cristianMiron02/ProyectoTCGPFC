@@ -2,7 +2,8 @@ import { auth, db } from "../firebase/firebase.js";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
-  signOut
+  signOut,
+  sendEmailVerification
 } from "firebase/auth";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -18,8 +19,11 @@ export async function registerWithEmail(email, password, userData) {
     fechaNacimiento: userData.fechaNacimiento,
     tipoCuenta: userData.tipoCuenta,
     nacionalidad: userData.nacionalidad,
+    emailVerified: false,
     createdAt: new Date().toISOString()
   });
+
+  await sendEmailVerification(cred.user);
 
   return cred.user;
 }

@@ -76,7 +76,7 @@ export default function Register() {
         nacionalidad
       });
 
-      navigate("/", { replace: true });
+      navigate("/verify-email", { replace: true });
     } catch (err) {
       setError(err.message || "Error al registrar.");
     }

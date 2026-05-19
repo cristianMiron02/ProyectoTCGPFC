@@ -87,10 +87,21 @@ export default function Favorites() {
                     </Link>
 
                     <button
-                        className="btn btn-outline-danger mt-2"
                         onClick={() => handleRemove(fav.id)}
+                        className="btn btn-light border rounded-circle position-absolute"
+                        style={{
+                            top: 10,
+                            right: 10,
+                            width: 42,
+                            height: 42,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "1.2rem",
+                            zIndex: 10
+                        }}
                     >
-                        Quitar favorito
+                        💔
                     </button>
                     </div>
                 </div>

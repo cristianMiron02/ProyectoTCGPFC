@@ -42,8 +42,12 @@ export function CartProvider({children}){
         });
     }
 
-    function removeFromCart(id){
-        setItems((prev) => prev.filter((i) => i.id !== id));
+    function clearCart() {
+        setItems([]);
+    }    
+
+    function removeFromCart(id) {
+        setItems((prev) => prev.filter((i) => (i.offerId || i.id) !== id));
     }
 
     function setQty(id, qty){
