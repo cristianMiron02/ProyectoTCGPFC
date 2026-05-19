@@ -5,7 +5,9 @@ import {
   doc,
   getDoc,
   query,
-  where
+  where, 
+  addDoc,
+  deleteDoc
 } from "firebase/firestore";
 
 export async function fetchProducts() {
@@ -55,4 +57,33 @@ export async function fetchOrdersByProductId(productId) {
     id: docu.id,
     ...docu.data()
   }));
+}
+
+export async function fetchFavoritesByUserId(userId) {
+  const q = query(
+    collection(db, "favorites"),
+    where("userId", "==", userId)
+  );
+
+  const snap = await getDocs(q);
+
+  return snap.docs.map((docu) => ({
+    id: docu.id,
+    ...docu.data()
+  }));
+}
+
+export async function addFavorite(userId, product) {
+  await addDoc(collection(db, "favorites"), {
+    userId,
+    productId: product.id,
+    productName: product.nombre,
+    productImage: product.imagen,
+    categoria: product.categoria,
+    createdAt: new Date().toISOString()
+  });
+}
+
+export async function removeFavorite(favoriteId) {
+  await deleteDoc(doc(db, "favorites", favoriteId));
 }

@@ -1,27 +1,57 @@
-import { Link } from 'react-router-dom'
+import { Link } from "react-router-dom";
+import { addFavorite } from "../data/productsApi.js";
+import { useAuth } from "../auth/useAuth.js";
 
 export default function ProductCard({ product }) {
+    const { user } = useAuth();
+
+    async function handleFavorite() {
+        if (!user) {
+        alert("Debes iniciar sesión para añadir favoritos.");
+        return;
+        }
+
+        await addFavorite(user.uid, product);
+        alert("Añadido a favoritos.");
+    }
+
     return (
         <div className="card h-100 shadow-sm">
+        <div style={{ height: "250px", overflow: "hidden" }}>
+            <img
+            src={product.imagen}
+            className="card-img-top w-100 h-100"
+            alt={product.nombre}
+            style={{ objectFit: "contain" }}
+            />
+        </div>
 
-            <div style={{ height: "250px", overflow: "hidden" }}>
-                <img
-                    src={product.imagen}
-                    className="card-img-top w-100 h-100"
-                    alt={product.nombre}
-                    style={{ objectFit: "contain", backgroundColor: "#fff" }}
-                />
-            </div>
+        <div className="card-body d-flex flex-column">
+            <h5 className="card-title">{product.nombre}</h5>
+            <p className="card-text mb-2">{product.categoria}</p>
 
+            <Link to={`/product/${product.id}`} className="btn btn-primary mt-auto">
+            Ver ofertas
+            </Link>
 
-            <div className="card-body d-flex flex-column">
-                <h5 className="card-title">{product.nombre}</h5>
-                <p className="card-text mb-2">{product.categoria}</p>
-
-                <Link to={`/product/${product.id}`} className="btn btn-primary mt-auto">
-                    Ver producto
-                </Link>
-            </div>
+            <button
+            onClick={handleFavorite}
+            className="btn btn-light border rounded-circle position-absolute"
+            style={{
+                top: 10,
+                right: 10,
+                width: 42,
+                height: 42,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "1.2rem",
+                zIndex: 10
+            }}
+            >
+            ❤️
+            </button>
+        </div>
         </div>
     );
 }

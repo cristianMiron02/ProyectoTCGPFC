@@ -12,10 +12,8 @@ import PublicOnlyRoute from "./routes/PublicOnlyRoute.jsx";
 import Register from "./pages/Register.jsx";
 import CreateOffer from "./pages/CreateOffer.jsx";
 import EditOffer from "./pages/EditOffer.jsx";
+import Favorites from "./pages/Favorites.jsx";
 import { useEffect } from "react";
-
-
-
 
 import './App.css'
 
@@ -29,6 +27,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="*" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/favorites" element={<Favorites />} />
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />

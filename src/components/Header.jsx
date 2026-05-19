@@ -53,6 +53,9 @@ export default function Header() {
             <NavLink className="nav-link" to="/cart">
               Carrito
             </NavLink>
+            <NavLink className="nav-link" to="/favorites">
+              Favoritos
+            </NavLink>
           </div>
 
           {!loading && user ? (

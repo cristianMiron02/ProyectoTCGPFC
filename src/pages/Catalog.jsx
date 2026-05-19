@@ -9,6 +9,7 @@ export default function Catalog() {
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [categoriaFiltro, setCategoriaFiltro] = useState("");
 
   useEffect(() => {
     async function loadProducts() {
@@ -20,20 +21,25 @@ export default function Catalog() {
       } finally {
         setLoading(false);
       }
-    } 
+    }
 
     loadProducts();
   }, []);
 
   const filtered = useMemo(() => {
-    if (!q) return products;
-
     return products.filter((p) => {
       const nombre = (p.nombre || "").toLowerCase();
       const descripcion = (p.descripcion || "").toLowerCase();
-      return nombre.includes(q) || descripcion.includes(q);
+
+      const coincideBusqueda =
+        !q || nombre.includes(q) || descripcion.includes(q);
+
+      const coincideCategoria =
+        !categoriaFiltro || p.categoria === categoriaFiltro;
+
+      return coincideBusqueda && coincideCategoria;
     });
-  }, [products, q]);
+  }, [products, q, categoriaFiltro]);
 
   if (loading) {
     return <div className="container py-4">Cargando productos...</div>;
@@ -43,13 +49,34 @@ export default function Catalog() {
     <div className="container-fluid py-4">
       <div className="d-flex align-items-center mb-3">
         <h1 className="mb-0">Productos</h1>
-          <small className="text-muted ms-3">
-            {q ? (
-              <>Resultados para: <strong>{q}</strong> ({filtered.length})</>
-            ) : (
-              <>Total: {products.length}</>
-            )}
-          </small>
+
+        <small className="text-muted ms-3">
+          {q ? (
+            <>
+              Resultados para: <strong>{q}</strong> ({filtered.length})
+            </>
+          ) : (
+            <>Mostrando {filtered.length} de {products.length}</>
+          )}
+        </small>
+      </div>
+
+      <div className="row mb-4">
+        <div className="col-12 col-md-4">
+          <label className="form-label">Filtrar por categoría</label>
+
+          <select
+            className="form-select"
+            value={categoriaFiltro}
+            onChange={(e) => setCategoriaFiltro(e.target.value)}
+          >
+            <option value="">Todas las categorías</option>
+            <option value="Pokémon">Pokémon</option>
+            <option value="One Piece">One Piece</option>
+            <option value="Gundam">Gundam</option>
+            <option value="Riftbound">Riftbound</option>
+          </select>
+        </div>
       </div>
 
       {filtered.length === 0 ? (
