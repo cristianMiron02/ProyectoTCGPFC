@@ -119,7 +119,7 @@ export default function Header() {
                     className="dropdown-item"
                     onClick={() => navigate("/profile")}
                   >
-                    👤 Ver perfil
+                    Ver perfil
                   </button>
                 </li>
 
@@ -130,7 +130,7 @@ export default function Header() {
                     className="dropdown-item"
                     onClick={() => navigate("/orders")}
                   >
-                    🧾 Mis compras
+                    Mis compras
                   </button>
                 </li>
 
@@ -141,7 +141,7 @@ export default function Header() {
                     className="dropdown-item"
                     onClick={() => navigate("/favorites")}
                   >
-                    ❤️ Favoritos
+                    Favoritos
                   </button>
                 </li>
 

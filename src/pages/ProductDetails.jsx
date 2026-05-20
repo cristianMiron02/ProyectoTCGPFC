@@ -29,34 +29,26 @@ function getFlagUrl(country) {
     case "España":
     case "Español":
       return "https://flagcdn.com/w40/es.png";
-
     case "Portugal":
     case "Portugués":
       return "https://flagcdn.com/w40/pt.png";
-
     case "Francia":
     case "Francés":
       return "https://flagcdn.com/w40/fr.png";
-
     case "Italia":
     case "Italiano":
       return "https://flagcdn.com/w40/it.png";
-
     case "Alemania":
     case "Alemán":
       return "https://flagcdn.com/w40/de.png";
-
     case "Reino Unido":
     case "Inglés":
       return "https://flagcdn.com/w40/gb.png";
-
     case "Estados Unidos":
       return "https://flagcdn.com/w40/us.png";
-
     case "Japón":
     case "Japonés":
       return "https://flagcdn.com/w40/jp.png";
-
     default:
       return "";
   }
@@ -74,6 +66,7 @@ export default function ProductDetails() {
   const [offerQty, setOfferQty] = useState({});
   const [salesData, setSalesData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [cartMessage, setCartMessage] = useState("");
 
   async function loadData() {
     try {
@@ -83,10 +76,12 @@ export default function ProductDetails() {
       setProduct(p);
 
       const productOffers = await fetchOffersByProductId(id);
-      setOffers(productOffers);
+      const offersWithStock = productOffers.filter(
+        (offer) => Number(offer.stock) > 0
+      );
+      setOffers(offersWithStock);
 
       const orders = await fetchOrdersByProductId(id);
-
       const grouped = {};
 
       orders.forEach((order) => {
@@ -159,6 +154,14 @@ export default function ProductDetails() {
     }));
   }
 
+  function showCartNotification() {
+    setCartMessage("✅ Carta añadida al carrito");
+
+    setTimeout(() => {
+      setCartMessage("");
+    }, 2500);
+  }
+
   if (loading) {
     return <div className="container-fluid py-4">Cargando producto...</div>;
   }
@@ -175,246 +178,282 @@ export default function ProductDetails() {
   }
 
   return (
-    <div className="container-fluid py-4">
-      <Link to="/catalog" className="text-decoration-none">
-        ← Volver al catálogo
-      </Link>
-
-      <div className="row g-4 mt-2">
-        <div className="col-12 col-lg-5">
-          <img
-            src={product.imagen}
-            alt={product.nombre}
-            className="img-fluid rounded"
-            style={{ maxHeight: 450, objectFit: "contain", width: "100%" }}
-          />
+    <>
+      {cartMessage && (
+        <div
+          style={{
+            position: "fixed",
+            top: 20,
+            right: 20,
+            zIndex: 9999,
+            minWidth: 280
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "#23272b",
+              color: "#d4af37",
+              border: "1px solid #d4af37",
+              padding: "14px 18px",
+              borderRadius: 12,
+              boxShadow: "0 0 12px rgba(0,0,0,0.4)",
+              fontWeight: 600
+            }}
+          >
+            {cartMessage}
+          </div>
         </div>
+      )}
 
-        <div className="col-12 col-lg-7">
-          <h1>{product.nombre}</h1>
+      <div className="container-fluid py-4">
+        <Link to="/catalog" className="text-decoration-none">
+          ← Volver al catálogo
+        </Link>
 
-          <div className="text-muted">
-            {product.categoria} {product.fecha ? `· Año ${product.fecha}` : ""}
+        <div className="row g-4 mt-2">
+          <div className="col-12 col-lg-5">
+            <img
+              src={product.imagen}
+              alt={product.nombre}
+              className="img-fluid rounded"
+              style={{ maxHeight: 450, objectFit: "contain", width: "100%" }}
+            />
           </div>
 
-          <p className="mt-3">
-            {product.descripcion?.trim()
-              ? product.descripcion
-              : "Sin descripción."}
-          </p>
+          <div className="col-12 col-lg-7">
+            <h1>{product.nombre}</h1>
+
+            <div className="text-muted">
+              {product.categoria} {product.fecha ? `· Año ${product.fecha}` : ""}
+            </div>
+
+            <p className="mt-3">
+              {product.descripcion?.trim()
+                ? product.descripcion
+                : "Sin descripción."}
+            </p>
+          </div>
         </div>
-      </div>
 
-      <div className="mt-5">
-        <div className="d-flex align-items-center justify-content-between mb-3">
-          <h2 className="mb-0">Ofertas disponibles</h2>
+        <div className="mt-5">
+          <div className="d-flex align-items-center justify-content-between mb-3">
+            <h2 className="mb-0">Ofertas disponibles</h2>
 
-          {(tipoCuenta === "seller" || tipoCuenta === "both") && (
-            <button
-              className="btn btn-primary"
-              onClick={() => navigate(`/create-offer/${product.id}`)}
-            >
-              Crear oferta
-            </button>
+            {(tipoCuenta === "seller" || tipoCuenta === "both") && (
+              <button className="btn"
+                style={{
+                  backgroundColor: "#d4af37",
+                  borderColor: "#d4af37",
+                  color: "#000",
+                  fontWeight: 600
+                }}
+                onClick={() => navigate(`/create-offer/${product.id}`)}
+              >
+                Crear oferta
+              </button>
+            )}
+          </div>
+
+          {offers.length === 0 ? (
+            <div className="alert alert-info">
+              No hay ofertas disponibles para esta carta.
+            </div>
+          ) : (
+            <div className="table-responsive">
+              <table className="table table-bordered align-middle">
+                <thead>
+                  <tr>
+                    <th>Vendedor</th>
+                    <th>Nacionalidad</th>
+                    <th>Idioma</th>
+                    <th>Estado</th>
+                    <th className="text-end">Precio</th>
+                    <th className="text-center">Stock</th>
+                    <th className="text-center">Cantidad</th>
+                    <th className="text-end">Acciones</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {offers.map((offer) => {
+                    const isOwner = user && user.uid === offer.sellerId;
+                    const stock = Number(offer.stock);
+                    const qty = offerQty[offer.id] || 1;
+
+                    return (
+                      <tr key={offer.id}>
+                        <td>{offer.sellerName || "-"}</td>
+
+                        <td className="text-center">
+                          {getFlagUrl(offer.sellerNationality) ? (
+                            <img
+                              src={getFlagUrl(offer.sellerNationality)}
+                              alt={offer.sellerNationality}
+                              style={{
+                                width: 28,
+                                height: 20,
+                                objectFit: "cover",
+                                borderRadius: 2
+                              }}
+                            />
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+
+                        <td className="text-center">
+                          {getFlagUrl(offer.idiomaCarta) ? (
+                            <img
+                              src={getFlagUrl(offer.idiomaCarta)}
+                              alt={offer.idiomaCarta}
+                              style={{
+                                width: 28,
+                                height: 20,
+                                objectFit: "cover",
+                                borderRadius: 2
+                              }}
+                            />
+                          ) : (
+                            "-"
+                          )}
+                        </td>
+
+                        <td>{offer.estado || "-"}</td>
+
+                        <td className="text-end">
+                          {Number(offer.precio).toLocaleString("es-ES")} €
+                        </td>
+
+                        <td className="text-center">{offer.stock}</td>
+
+                        <td className="text-center">
+                          {stock > 1 ? (
+                            <input
+                              type="number"
+                              className="form-control form-control-sm text-center"
+                              style={{
+                                width: 80,
+                                marginLeft: "auto",
+                                marginRight: "auto"
+                              }}
+                              min="1"
+                              max={stock}
+                              value={qty}
+                              onChange={(e) =>
+                                handleQtyChange(offer, e.target.value)
+                              }
+                            />
+                          ) : (
+                            <span>1</span>
+                          )}
+                        </td>
+
+                        <td className="text-end">
+                          <div className="d-flex justify-content-end gap-2">
+                            {user ? (
+                              <button
+                                className="btn btn-sm btn-success"
+                                disabled={stock <= 0}
+                                onClick={() => {
+                                  addToCart(
+                                    {
+                                      ...product,
+                                      precio: Number(offer.precio),
+                                      offerId: offer.id,
+                                      sellerId: offer.sellerId,
+                                      sellerName: offer.sellerName,
+                                      sellerNationality:
+                                        offer.sellerNationality,
+                                      idiomaCarta: offer.idiomaCarta,
+                                      estado: offer.estado
+                                    },
+                                    qty
+                                  );
+
+                                  showCartNotification();
+                                }}
+                              >
+                                Añadir al carrito
+                              </button>
+                            ) : (
+                              <button
+                                className="btn btn-sm btn-warning"
+                                onClick={() => navigate("/login")}
+                              >
+                                Iniciar sesión
+                              </button>
+                            )}
+
+                            {isOwner && (
+                              <>
+                                <button
+                                  className="btn btn-sm btn-outline-primary"
+                                  onClick={() =>
+                                    navigate(`/edit-offer/${offer.id}`)
+                                  }
+                                >
+                                  Editar
+                                </button>
+
+                                <button
+                                  className="btn btn-sm btn-outline-danger"
+                                  onClick={() => handleDeleteOffer(offer.id)}
+                                >
+                                  Borrar
+                                </button>
+                              </>
+                            )}
+                          </div>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
 
-        {offers.length === 0 ? (
-          <div className="alert alert-info">
-            No hay ofertas disponibles para esta carta.
-          </div>
-        ) : (
-          <div className="table-responsive">
-            <table className="table table-bordered align-middle">
-              <thead>
-                <tr>
-                  <th>Vendedor</th>
-                  <th>Nacionalidad</th>
-                  <th>Idioma</th>
-                  <th>Estado</th>
-                  <th className="text-end">Precio</th>
-                  <th className="text-center">Stock</th>
-                  <th className="text-center">Cantidad</th>
-                  <th className="text-end">Acciones</th>
-                </tr>
-              </thead>
+        <div className="mt-5">
+          <h2 className="mb-3">Estadísticas de ventas</h2>
 
-              <tbody>
-                {offers.map((offer) => {
-                  const isOwner = user && user.uid === offer.sellerId;
-                  const stock = Number(offer.stock);
-                  const qty = offerQty[offer.id] || 1;
-
-                  return (
-                    <tr key={offer.id}>
-                      <td>{offer.sellerName || "-"}</td>
-
-                      <td className="text-center">
-                        {getFlagUrl(offer.sellerNationality) ? (
-                          <img
-                            src={getFlagUrl(offer.sellerNationality)}
-                            alt={offer.sellerNationality}
-                            style={{
-                              width: 28,
-                              height: 20,
-                              objectFit: "cover",
-                              borderRadius: 2
-                            }}
-                          />
-                        ) : (
-                          "-"
-                        )}
-                      </td>
-
-                      <td className="text-center">
-                        {getFlagUrl(offer.idiomaCarta) ? (
-                          <img
-                            src={getFlagUrl(offer.idiomaCarta)}
-                            alt={offer.idiomaCarta}
-                            style={{
-                              width: 28,
-                              height: 20,
-                              objectFit: "cover",
-                              borderRadius: 2
-                            }}
-                          />
-                        ) : (
-                          "-"
-                        )}
-                      </td>
-
-                      <td>{offer.estado || "-"}</td>
-
-                      <td className="text-end">
-                        {Number(offer.precio).toLocaleString("es-ES")} €
-                      </td>
-
-                      <td className="text-center">{offer.stock}</td>
-
-                      <td className="text-center">
-                        {stock > 1 ? (
-                          <input
-                            type="number"
-                            className="form-control form-control-sm text-center"
-                            style={{
-                              width: 80,
-                              marginLeft: "auto",
-                              marginRight: "auto"
-                            }}
-                            min="1"
-                            max={stock}
-                            value={qty}
-                            onChange={(e) =>
-                              handleQtyChange(offer, e.target.value)
-                            }
-                          />
-                        ) : (
-                          <span>1</span>
-                        )}
-                      </td>
-
-                      <td className="text-end">
-                        <div className="d-flex justify-content-end gap-2">
-                          {user ? (
-                            <button
-                              className="btn btn-sm btn-success"
-                              disabled={stock <= 0}
-                              onClick={() =>
-                                addToCart(
-                                  {
-                                    ...product,
-                                    precio: Number(offer.precio),
-                                    offerId: offer.id,
-                                    sellerId: offer.sellerId,
-                                    sellerName: offer.sellerName,
-                                    sellerNationality: offer.sellerNationality,
-                                    idiomaCarta: offer.idiomaCarta,
-                                    estado: offer.estado
-                                  },
-                                  qty
-                                )
-                              }
-                            >
-                              Añadir al carrito
-                            </button>
-                          ) : (
-                            <button
-                              className="btn btn-sm btn-warning"
-                              onClick={() => navigate("/login")}
-                            >
-                              Iniciar sesión
-                            </button>
-                          )}
-
-                          {isOwner && (
-                            <>
-                              <button
-                                className="btn btn-sm btn-outline-primary"
-                                onClick={() =>
-                                  navigate(`/edit-offer/${offer.id}`)
-                                }
-                              >
-                                Editar
-                              </button>
-
-                              <button
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={() => handleDeleteOffer(offer.id)}
-                              >
-                                Borrar
-                              </button>
-                            </>
-                          )}
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
-        )}
-      </div>
-
-      <div className="mt-5">
-        <h2 className="mb-3">Estadísticas de ventas</h2>
-
-        {salesData.length === 0 ? (
-          <div className="alert alert-secondary">
-            Todavía no hay ventas registradas para esta carta.
-          </div>
-        ) : (
-          <>
-            <div className="p-4 border rounded-3 mb-4">
-              <h5>Unidades vendidas por día</h5>
-
-              <ResponsiveContainer width="100%" height={300}>
-                <BarChart data={salesData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar dataKey="ventas" />
-                </BarChart>
-              </ResponsiveContainer>
+          {salesData.length === 0 ? (
+            <div className="alert alert-secondary">
+              Todavía no hay ventas registradas para esta carta.
             </div>
+          ) : (
+            <>
+              <div className="p-4 border rounded-3 mb-4">
+                <h5>Unidades vendidas por día</h5>
 
-            <div className="p-4 border rounded-3">
-              <h5>Ingresos por día (€)</h5>
+                <ResponsiveContainer width="100%" height={300}>
+                  <BarChart data={salesData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="dia" />
+                    <YAxis />
+                    <Tooltip />
+                    <Bar dataKey="ventas" />
+                  </BarChart>
+                </ResponsiveContainer>
+              </div>
 
-              <ResponsiveContainer width="100%" height={300}>
-                <LineChart data={salesData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="dia" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line type="monotone" dataKey="ingresos" />
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          </>
-        )}
+              <div className="p-4 border rounded-3">
+                <h5>Ingresos por día (€)</h5>
+
+                <ResponsiveContainer width="100%" height={300}>
+                  <LineChart data={salesData}>
+                    <CartesianGrid strokeDasharray="3 3" />
+                    <XAxis dataKey="dia" />
+                    <YAxis />
+                    <Tooltip />
+                    <Line type="monotone" dataKey="ingresos" />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

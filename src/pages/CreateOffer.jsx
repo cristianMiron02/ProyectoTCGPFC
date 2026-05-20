@@ -203,11 +203,12 @@
                 onChange={(e) => setEstado(e.target.value)}
                 >
                 <option value="">Selecciona estado</option>
-                <option value="Mint">Mint</option>
-                <option value="Near Mint">Near Mint</option>
-                <option value="Excellent">Excellent</option>
-                <option value="Good">Good</option>
-                <option value="Played">Played</option>
+                <option value="Mint">Gradeada</option>
+                <option value="Mint">Nueva</option>
+                <option value="Near Mint">Casi Nueva</option>
+                <option value="Excellent">Excelente</option>
+                <option value="Good">Buena</option>
+                <option value="Played">Jugada</option>
                 </select>
             </div>
 
