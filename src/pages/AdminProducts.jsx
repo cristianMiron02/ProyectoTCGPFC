@@ -82,7 +82,7 @@ export default function AdminProducts() {
         <div className="d-flex justify-content-between align-items-center mb-4">
             <h1>Panel admin - Cartas base</h1>
 
-            <Link to="/admin/products/new" className="btn btn-primary">
+            <Link to="/admin/products/new" className="btn" style={{backgroundColor: "#d4af37", borderColor: "#d4af37", color: "#000"}}>
             Nueva carta
             </Link>
         </div>

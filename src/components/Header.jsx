@@ -79,7 +79,7 @@ export default function Header() {
             <button className="btn" style={{
               backgroundColor: "#d4af37",
               borderColor: "#d4af37",
-              color: "#000"
+              color: "#292929"
             }}>
               Buscar
             </button>
@@ -131,17 +131,6 @@ export default function Header() {
                     onClick={() => navigate("/orders")}
                   >
                     🧾 Mis compras
-                  </button>
-                </li>
-
-                <li><hr className="dropdown-divider" /></li>
-
-                <li>
-                  <button
-                    className="dropdown-item"
-                    onClick={() => navigate("/wishlist")}
-                  >
-                    ⭐ Lista de deseos
                   </button>
                 </li>
 

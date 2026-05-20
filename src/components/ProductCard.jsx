@@ -48,8 +48,8 @@ export default function ProductCard({ product }) {
                 fontSize: "1.2rem",
                 zIndex: 10,
 
-                backgroundColor: "#212529",
-                borderColor: "#212529",
+                backgroundColor: "#23272b",
+                borderColor: "#d4af37",
                 color: "#ff4d6d"
             }}
             >

@@ -16,6 +16,8 @@ import Favorites from "./pages/Favorites.jsx";
 import AdminProducts from "./pages/AdminProducts.jsx";
 import AdminProductForm from "./pages/AdminProductForm.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx"; 
+import Profile from "./pages/Profile.jsx";
+import Orders from "./pages/Orders.jsx";
 import { useEffect } from "react";
 
 import './App.css'
@@ -34,6 +36,8 @@ function App() {
         <Route path="/admin/products" element={<AdminProducts />} />
         <Route path="/admin/products/new" element={<AdminProductForm />} />
         <Route path="/admin/products/edit/:productId" element={<AdminProductForm />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/orders" element={<Orders />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<Login />} />
