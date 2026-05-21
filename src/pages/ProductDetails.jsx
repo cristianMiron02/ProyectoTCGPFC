@@ -267,6 +267,7 @@ export default function ProductDetails() {
                     <th>Nacionalidad</th>
                     <th>Idioma</th>
                     <th>Estado</th>
+                    <th>Grado</th>
                     <th className="text-end">Precio</th>
                     <th className="text-center">Stock</th>
                     <th className="text-center">Cantidad</th>
@@ -320,6 +321,8 @@ export default function ProductDetails() {
 
                         <td>{offer.estado || "-"}</td>
 
+                        <td>{offer.estado === "Gradeada" ? offer.gradoCarta || "-" : "-"}</td>
+
                         <td className="text-end">
                           {Number(offer.precio).toLocaleString("es-ES")} €
                         </td>
@@ -355,6 +358,11 @@ export default function ProductDetails() {
                                 className="btn btn-sm btn-success"
                                 disabled={stock <= 0}
                                 onClick={() => {
+                                  if (qty > stock) {
+                                    alert("No hay suficiente stock disponible.");
+                                    return;
+                                  }
+
                                   addToCart(
                                     {
                                       ...product,
@@ -362,13 +370,30 @@ export default function ProductDetails() {
                                       offerId: offer.id,
                                       sellerId: offer.sellerId,
                                       sellerName: offer.sellerName,
-                                      sellerNationality:
-                                        offer.sellerNationality,
+                                      sellerNationality: offer.sellerNationality,
                                       idiomaCarta: offer.idiomaCarta,
                                       estado: offer.estado
                                     },
                                     qty
                                   );
+
+                                  setOffers((prevOffers) =>
+                                    prevOffers
+                                      .map((o) =>
+                                        o.id === offer.id
+                                          ? {
+                                              ...o,
+                                              stock: Number(o.stock) - qty
+                                            }
+                                          : o
+                                      )
+                                      .filter((o) => Number(o.stock) > 0)
+                                  );
+
+                                  setOfferQty((prev) => ({
+                                    ...prev,
+                                    [offer.id]: 1
+                                  }));
 
                                   showCartNotification();
                                 }}

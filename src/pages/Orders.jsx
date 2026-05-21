@@ -110,34 +110,34 @@ export default function Orders() {
                         </div>
 
                         <div className="mb-1">
-                            👤 Vendedor:{" "}
+                            Vendedor:{" "}
                             <strong>
                             {order.sellerName}
                             </strong>
                         </div>
 
                         <div className="mb-1">
-                            🌍 Nacionalidad:{" "}
+                            Nacionalidad:{" "}
                             {order.sellerNationality || "-"}
                         </div>
 
                         <div className="mb-1">
-                            🗣 Idioma:{" "}
+                            Idioma:{" "}
                             {order.idiomaCarta || "-"}
                         </div>
 
                         <div className="mb-1">
-                            📦 Estado:{" "}
+                            Estado:{" "}
                             {order.estado || "-"}
                         </div>
 
                         <div className="mb-1">
-                            🔢 Cantidad:{" "}
+                            Cantidad:{" "}
                             {order.qty}
                         </div>
 
                         <div className="mb-1">
-                            💰 Precio unidad:{" "}
+                            Precio unidad:{" "}
                             {Number(order.price).toLocaleString("es-ES")} €
                         </div>
 

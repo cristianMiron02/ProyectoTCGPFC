@@ -1,32 +1,102 @@
-Tienda TCG Online – Instrucciones de Instalación
-Este documento explica cómo instalar y ejecutar la aplicación web “Tienda TCG Online”,
-desarrollada con React (Vite) y Firebase (Authentication y Firestore).
-1. Tecnologías utilizadas
-• React 18
-• Vite
-• Bootstrap 5
-• Firebase Authentication
-• Firestore Database
-• React Router DOM
-2. Requisitos previos
-• Node.js (versión LTS recomendada)
-• npm
-• Cuenta de Google para Firebase
-• Conexión a Internet
-3. Instalación del proyecto
-    1. Clonar el repositorio:
-        git clone URL_DEL_REPOSITORIO
-        cd NOMBRE_DEL_PROYECTO
-    2. Instalar dependencias:
-        npm install
-4. Configuración de Firebase
-El proyecto está conectado a Firebase para la autenticación y la base de datos. Para que funcione
-correctamente es necesario que el proyecto Firebase tenga: - Authentication activado con método
-Email/Password - Firestore Database creada - Una colección llamada 'products' con los siguientes
-campos: - nombre (string) - precio (number) - categoria (string) - descripcion (string) - imagen
-(string) - destacado (boolean) - fecha (string)
-5. Ejecución
-Para iniciar la aplicación en modo desarrollo:
- npm run dev
-Abrir en el navegador:
-http://localhost:5173
+# The God Cards
+
+The God Cards es un marketplace TCG desarrollado con React y Firebase donde los usuarios pueden comprar y vender cartas coleccionables.
+
+## Funcionalidades
+
+- Registro e inicio de sesión
+- Confirmación de email
+- Roles de usuario
+- Catálogo de cartas
+- Sistema de ofertas
+- Carrito de compra
+- Favoritos
+- Perfil de usuario
+- Historial de compras
+- Panel de administración
+- Gestión de stock
+- Gráficos de ventas
+
+
+## Tecnologías utilizadas
+
+- React
+- Vite
+- React Router DOM
+- Firebase Authentication
+- Firebase Firestore
+- Bootstrap 5
+- Recharts
+
+
+## Instalación
+
+Clonar repositorio:
+
+git clone URL_DEL_REPOSITORIO
+
+Instalar dependencias:
+
+npm install
+
+Ejecutar proyecto:
+
+npm run dev
+
+## Firebase
+
+El proyecto utiliza:
+
+- Firebase Authentication
+- Cloud Firestore
+
+Archivo de configuración:
+
+src/firebase/firebase.js
+
+## Roles
+
+### Comprador
+
+- Comprar cartas
+- Añadir favoritos
+- Ver compras
+
+### Vendedor
+
+- Crear ofertas
+- Editar ofertas
+- Gestionar stock
+
+### Administrador
+
+- Crear cartas
+- Editar cartas
+- Eliminar cartas
+
+## Compra
+
+1. El usuario inicia sesión.
+2. Añade cartas al carrito.
+3. Finaliza compra.
+4. Se crea un pedido.
+5. Se actualiza el stock.
+
+## Estadísticas
+
+Cada carta incluye:
+
+- Ventas por día
+- Ingresos por día
+
+## Diseño
+
+- Tema oscuro
+- Botones dorados
+- Responsive
+- Carrusel principal
+- Notificaciones visuales
+
+## Autor
+
+Cristian Mirón Vázquez

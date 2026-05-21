@@ -20,6 +20,7 @@
     const [precio, setPrecio] = useState("");
     const [stock, setStock] = useState("");
     const [idiomaCarta, setIdiomaCarta] = useState("");
+    const [gradoCarta, setGradoCarta] = useState("");
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(true);
@@ -109,6 +110,11 @@
         return;
         }
 
+        if (estado === "Gradeada" && !gradoCarta) {
+            setError("Selecciona el grado de la carta.");
+            return;
+        }
+
         try {
         await addDoc(collection(db, "offers"), {
             productId,
@@ -120,6 +126,7 @@
             sellerNationality: sellerNationality || "No indicada",
 
             estado,
+            gradoCarta: estado === "Gradeada" ? gradoCarta : "",
             idiomaCarta,
 
             precio: Number(precio),
@@ -203,13 +210,36 @@
                 onChange={(e) => setEstado(e.target.value)}
                 >
                 <option value="">Selecciona estado</option>
-                <option value="Mint">Gradeada</option>
-                <option value="Mint">Nueva</option>
-                <option value="Near Mint">Casi Nueva</option>
-                <option value="Excellent">Excelente</option>
-                <option value="Good">Buena</option>
-                <option value="Played">Jugada</option>
+                <option value="Gradeada">Gradeada</option>
+                <option value="Nueva">Nueva</option>
+                <option value="Casi nueva">Casi Nueva</option>
+                <option value="Rota">Rota</option>
+                <option value="Jugada">Jugada</option>
                 </select>
+
+                {estado === "Gradeada" && (
+                    <div className="mb-3">
+                        <label className="form-label">Grado</label>
+
+                        <select
+                        className="form-select"
+                        value={gradoCarta}
+                        onChange={(e) => setGradoCarta(e.target.value)}
+                        >
+                        <option value="">Selecciona grado</option>
+
+                        <option value="PSA 10">PSA 10</option>
+                        <option value="PSA 9">PSA 9</option>
+                        <option value="PSA 8">PSA 8</option>
+
+                        <option value="BGS 10">BGS 10</option>
+                        <option value="BGS 9.5">BGS 9.5</option>
+
+                        <option value="CGC 10">CGC 10</option>
+                        <option value="CGC 9.5">CGC 9.5</option>
+                        </select>
+                    </div>
+                )}
             </div>
 
             <div className="mb-3">
@@ -220,14 +250,9 @@
                 onChange={(e) => setIdiomaCarta(e.target.value)}
                 >
                 <option value="">Selecciona idioma</option>
-                <option value="España">España</option>
-                <option value="Reino Unido">Reino Unido</option>
-                <option value="Japón">Japón</option>
-                <option value="Francia">Francia</option>
-                <option value="Italia">Italia</option>
-                <option value="Alemania">Alemania</option>
-                <option value="Portugal">Portugal</option>
-                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="España">Español</option>
+                <option value="Reino Unido">Inglés</option>
+                <option value="Japón">Japonés</option>
                 </select>
             </div>
 
