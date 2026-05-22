@@ -13,13 +13,11 @@ import Register from "./pages/Register.jsx";
 import CreateOffer from "./pages/CreateOffer.jsx";
 import EditOffer from "./pages/EditOffer.jsx";
 import Favorites from "./pages/Favorites.jsx";
-import AdminProducts from "./pages/AdminProducts.jsx";
-import AdminProductForm from "./pages/AdminProductForm.jsx";
 import VerifyEmail from "./pages/VerifyEmail.jsx"; 
 import Profile from "./pages/Profile.jsx";
 import Orders from "./pages/Orders.jsx";
+import AdminDashboard from "./pages/AdminDashboard.jsx";
 import { useEffect } from "react";
-
 import './App.css'
 
 function App() { 
@@ -33,9 +31,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         <Route path="/login" element={<Login />} />
         <Route path="/favorites" element={<Favorites />} />
-        <Route path="/admin/products" element={<AdminProducts />} />
-        <Route path="/admin/products/new" element={<AdminProductForm />} />
-        <Route path="/admin/products/edit/:productId" element={<AdminProductForm />} />
+        <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/orders" element={<Orders />} />
         <Route path="/verify-email" element={<VerifyEmail />} />

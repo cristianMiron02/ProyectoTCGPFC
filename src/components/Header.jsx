@@ -152,9 +152,9 @@ export default function Header() {
                     <li>
                       <button
                         className="dropdown-item"
-                        onClick={() => navigate("/admin/products")}
+                        onClick={() => navigate("/admin")}
                       >
-                        🛠 Panel admin
+                        Panel admin
                       </button>
                     </li>
                   </>
