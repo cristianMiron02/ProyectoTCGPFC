@@ -452,14 +452,41 @@ export default function ProductDetails() {
                 <h5>Unidades vendidas por día</h5>
 
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={salesData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="dia" />
-                    <YAxis />
-                    <Tooltip />
-                    <Bar dataKey="ventas" />
-                  </BarChart>
-                </ResponsiveContainer>
+                <BarChart data={salesData}>
+                  <CartesianGrid stroke="#444" strokeDasharray="3 3" />
+
+                  <XAxis
+                    dataKey="dia"
+                    stroke="#ccc"
+                  />
+
+                  <YAxis
+                    stroke="#ccc"
+                  />
+
+                  <Tooltip
+                    cursor={false}
+                    contentStyle={{
+                      backgroundColor: "#212529",
+                      border: "1px solid #d4af37",
+                      borderRadius: 10,
+                      color: "#fff"
+                    }}
+                    labelStyle={{
+                      color: "#d4af37"
+                    }}
+                    itemStyle={{
+                      color: "#fff"
+                    }}
+                  />
+
+                  <Bar
+                    dataKey="ventas"
+                    fill="#d4af37"
+                    radius={[6, 6, 0, 0]}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
               </div>
 
               <div className="p-4 border rounded-3">
@@ -471,7 +498,18 @@ export default function ProductDetails() {
                     <XAxis dataKey="dia" />
                     <YAxis />
                     <Tooltip />
-                    <Line type="monotone" dataKey="ingresos" />
+                    <Line
+                      type="monotone"
+                      dataKey="ingresos"
+                      stroke="#d4af37"
+                      strokeWidth={3}
+                      dot={{ fill: "#d4af37", stroke: "#d4af37" }}
+                      activeDot={{
+                        r: 6,
+                        fill: "#d4af37",
+                        stroke: "#d4af37"
+                      }}
+                    />
                   </LineChart>
                 </ResponsiveContainer>
               </div>

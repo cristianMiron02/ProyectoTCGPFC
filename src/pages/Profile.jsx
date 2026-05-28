@@ -118,9 +118,9 @@ export default function Profile() {
                 <h6 className="text-warning">Tipo de cuenta</h6>
 
                 <div>
-                    {userData?.tipoCuenta === "buyer" && "🛒 Comprador"}
-                    {userData?.tipoCuenta === "seller" && "💰 Vendedor"}
-                    {userData?.tipoCuenta === "both" && "⚡ Comprador/Vendedor"}
+                    {userData?.tipoCuenta === "buyer" && "Comprador"}
+                    {userData?.tipoCuenta === "seller" && "Vendedor"}
+                    {userData?.tipoCuenta === "both" && "Comprador/Vendedor"}
                 </div>
                 </div>
 
@@ -138,11 +138,11 @@ export default function Profile() {
                 <div>
                     {user.emailVerified ? (
                     <span className="text-success">
-                        ✅ Verificado
+                        Verificado
                     </span>
                     ) : (
                     <span className="text-danger">
-                        ❌ No verificado
+                        No verificado
                     </span>
                     )}
                 </div>

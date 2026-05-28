@@ -96,7 +96,6 @@ export default function Register() {
                 className="form-control"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                placeholder="Ej: cristian_cards"
               />
           </div>
 
