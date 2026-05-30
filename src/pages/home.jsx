@@ -26,84 +26,76 @@ export default function Home() {
 
     return (
         <div className="container-fluid px-0">
-        <div id="homeCarousel" className="carousel slide" data-bs-ride="carousel">
-            <div className="carousel-inner">
-            <div className="carousel-item active">
-                <div
-                className="d-flex flex-column justify-content-center align-items-center text-center"
+        <div className="d-flex justify-content-center my-3">
+            <div
+                id="homeCarousel"
+                className="carousel slide"
+                data-bs-ride="carousel"
                 style={{
-                    height: "450px",
-                    background: "linear-gradient(to bottom, #666666, #666666)"
+                    width: "95%",
+                    maxWidth: "1600px",
+                    borderRadius: "15px",
+                    overflow: "hidden"
                 }}
-                >
-                <h1 className="fw-bold" style={{ fontSize: "4rem", color: "#d4af37" }}>
-                    The God Cards
-                </h1>
-
-                <p className="fs-4 text-light">
-                    Compra y vende cartas TCG
-                </p>
-
-                <Link to="/catalog" className="btn btn-gold btn-lg mt-3">
-                    Ver catálogo
-                </Link>
-                </div>
-            </div>
-
-            <div className="carousel-item">
-                <div
-                className="d-flex flex-column justify-content-center align-items-center text-center"
-                style={{
-                    height: "450px",
-                    background: "linear-gradient(to bottom, #111111, #1a1a1a)"
-                }}
-                >
-                <h1 className="fw-bold" style={{ fontSize: "4rem", color: "#d4af37" }}>
-                    Marketplace TCG
-                </h1>
-
-                <p className="fs-4 text-light">
-                    Encuentra cartas únicas
-                </p>
-                </div>
-            </div>
-
-            <div className="carousel-item">
-                <div
-                className="d-flex flex-column justify-content-center align-items-center text-center"
-                style={{
-                    height: "450px",
-                    background: "linear-gradient(to bottom, #666666, #666666)"
-                }}
-                >
-                <h1 className="fw-bold" style={{ fontSize: "4rem", color: "#d4af37" }}>
-                    Compra y vende
-                </h1>
-
-                <p className="fs-4 text-light">
-                    Sistema de ofertas entre usuarios
-                </p>
-                </div>
-            </div>
-            </div>
-
-            <button
-            className="carousel-control-prev"
-            type="button"
-            data-bs-target="#homeCarousel"
-            data-bs-slide="prev"
             >
-            <span className="carousel-control-prev-icon"></span>
-            </button>
+                <div className="carousel-inner">
 
-            <button
-            className="carousel-control-next"
-            type="button"
-            data-bs-target="#homeCarousel"
-            data-bs-slide="next"
-            >
-            <span className="carousel-control-next-icon"></span>
-            </button>
+                    <div className="carousel-item active">
+                        <img
+                            src="/images/banner 1.png"
+                            className="d-block w-100"
+                            alt="Compra y vende cartas TCG"
+                            style={{
+                                height: "320px",
+                                objectFit: "contain"
+                            }}
+                        />
+                    </div>
+
+                    <div className="carousel-item">
+                        <img
+                            src="/images/banner 2.png"
+                            className="d-block w-100"
+                            alt="Miles de ofertas disponibles"
+                            style={{
+                                height: "320px",
+                                objectFit: "contain"
+                            }}
+                        />
+                    </div>
+
+                    <div className="carousel-item">
+                        <img
+                            src="/images/banner 3.png"
+                            className="d-block w-100"
+                            alt="Gestiona tu colección"
+                            style={{
+                                height: "320px",
+                                objectFit: "contain"
+                            }}
+                        />
+                    </div>
+
+                </div>
+
+                <button
+                    className="carousel-control-prev"
+                    type="button"
+                    data-bs-target="#homeCarousel"
+                    data-bs-slide="prev"
+                >
+                    <span className="carousel-control-prev-icon"></span>
+                </button>
+
+                <button
+                    className="carousel-control-next"
+                    type="button"
+                    data-bs-target="#homeCarousel"
+                    data-bs-slide="next"
+                >
+                    <span className="carousel-control-next-icon"></span>
+                </button>
+            </div>
         </div>
 
         <div className="container-fluid py-5 px-4">
