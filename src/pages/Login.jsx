@@ -26,23 +26,39 @@ export default function Login() {
   }
 
   return (
-    <div className="container-fluid py-4">
+    <div
+      className="container-fluid py-4"
+      style={{ minHeight: "70vh" }}
+    >
       <div className="p-4 border rounded-3">
         <h1 className="mb-3">Iniciar sesión</h1>
+
         {error && <div className="alert alert-danger">{error}</div>}
 
         <form onSubmit={handleSubmit} style={{ maxWidth: 420 }}>
           <div className="mb-3">
             <label className="form-label">Email</label>
-            <input className="form-control" value={email} onChange={(e)=>setEmail(e.target.value)} />
+            <input
+              className="form-control"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
 
           <div className="mb-3">
             <label className="form-label">Contraseña</label>
-            <input type="password" className="form-control" value={password} onChange={(e)=>setPassword(e.target.value)} />
+            <input
+              type="password"
+              className="form-control"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </div>
 
-          <button className="btn btn-primary" type="submit">Entrar</button>
+          <button className="btn btn-primary" type="submit">
+            Entrar
+          </button>
+
           <div className="mt-3">
             ¿No tienes cuenta? <Link to="/register">Regístrate</Link>
           </div>
