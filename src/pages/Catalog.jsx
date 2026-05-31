@@ -75,6 +75,7 @@ export default function Catalog() {
             <option value="One Piece">One Piece</option>
             <option value="Gundam">Gundam</option>
             <option value="Riftbound">Riftbound</option>
+            <option value="Yu-Gi-Oh">Yu-Gi-Oh</option>
           </select>
         </div>
       </div>

@@ -77,7 +77,10 @@ export default function Cart() {
     }
 
     return (
-        <div className="container-fluid py-4">
+        <div
+            className="container-fluid py-4"
+            style={{ minHeight: "calc(100vh - 260px)" }}
+        >
             <h1 className="mb-3">Carrito</h1>
 
             {error && <div className="alert alert-danger">{error}</div>}
