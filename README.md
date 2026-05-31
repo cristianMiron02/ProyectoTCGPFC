@@ -1,102 +1,177 @@
 # The God Cards
 
-The God Cards es un marketplace TCG desarrollado con React y Firebase donde los usuarios pueden comprar y vender cartas coleccionables.
+Marketplace especializado en la compra y venta de cartas coleccionables TCG desarrollado como Proyecto Fin de Ciclo del CFGS de Desarrollo de Aplicaciones Web (DAW).
 
-## Funcionalidades
+## Descripción
 
-- Registro e inicio de sesión
-- Confirmación de email
-- Roles de usuario
-- Catálogo de cartas
-- Sistema de ofertas
-- Carrito de compra
-- Favoritos
-- Perfil de usuario
-- Historial de compras
-- Panel de administración
-- Gestión de stock
-- Gráficos de ventas
+The God Cards es una plataforma web que permite a compradores y vendedores gestionar cartas coleccionables de diferentes categorías TCG mediante un sistema de marketplace moderno.
 
+La aplicación incorpora autenticación de usuarios, gestión de ofertas, favoritos, carrito de compra, historial de pedidos, panel de administración y pagos online mediante Stripe.
+
+---
 
 ## Tecnologías utilizadas
 
-- React
-- Vite
-- React Router DOM
-- Firebase Authentication
-- Firebase Firestore
-- Bootstrap 5
-- Recharts
+### Frontend
 
+* React
+* React Router
+* Bootstrap
+* Recharts
+* Vite
+
+### Backend y servicios
+
+* Firebase Authentication
+* Firestore Database
+* Stripe Checkout
+* Node.js
+* Express
+
+---
+
+## Funcionalidades principales
+
+### Usuarios
+
+* Registro de usuarios.
+* Inicio de sesión.
+* Gestión de perfil.
+* Sistema de roles.
+
+### Catálogo
+
+* Búsqueda de cartas.
+* Filtrado por categorías.
+* Visualización de detalles.
+
+### Marketplace
+
+* Creación de ofertas por vendedores.
+* Gestión de stock.
+* Gestión de precios.
+* Diferentes estados de conservación.
+* Diferentes idiomas.
+
+### Favoritos
+
+* Añadir cartas a favoritos.
+* Consulta rápida de cartas guardadas.
+
+### Compras
+
+* Carrito de compra.
+* Cálculo automático del total.
+* Comisión de plataforma.
+* Pago mediante Stripe Checkout.
+* Historial de pedidos.
+
+### Administración
+
+* Gestión de cartas base.
+* Creación de cartas.
+* Edición de cartas.
+* Eliminación de cartas.
+* Gestión de usuarios.
+* Estadísticas de ventas.
+
+---
+
+## Estructura del proyecto
+
+```txt
+src/
+├── auth/
+├── cart/
+├── components/
+├── data/
+├── layout/
+├── pages/
+├── routes/
+└── services/
+```
+
+---
 
 ## Instalación
 
-Clonar repositorio:
+### Clonar repositorio
 
-git clone URL_DEL_REPOSITORIO
+```bash
+git clone <url-del-repositorio>
+cd tienda-react
+```
 
-Instalar dependencias:
+### Instalar dependencias
 
+```bash
 npm install
+```
 
-Ejecutar proyecto:
+### Configurar Firebase
 
+Crear un archivo:
+
+```txt
+.env
+```
+
+e introducir las variables correspondientes de Firebase y Stripe.
+
+---
+
+## Ejecución del proyecto
+
+### Frontend
+
+```bash
 npm run dev
+```
 
-## Firebase
+### Servidor Stripe
 
-El proyecto utiliza:
+```bash
+node server.js
+```
 
-- Firebase Authentication
-- Cloud Firestore
+---
 
-Archivo de configuración:
-
-src/firebase/firebase.js
-
-## Roles
+## Roles disponibles
 
 ### Comprador
 
-- Comprar cartas
-- Añadir favoritos
-- Ver compras
+* Consultar cartas.
+* Añadir favoritos.
+* Comprar ofertas.
+* Consultar pedidos.
 
 ### Vendedor
 
-- Crear ofertas
-- Editar ofertas
-- Gestionar stock
+* Crear ofertas.
+* Gestionar stock.
+* Gestionar precios.
 
 ### Administrador
 
-- Crear cartas
-- Editar cartas
-- Eliminar cartas
+* Gestionar cartas.
+* Gestionar usuarios.
+* Consultar estadísticas.
 
-## Compra
+---
 
-1. El usuario inicia sesión.
-2. Añade cartas al carrito.
-3. Finaliza compra.
-4. Se crea un pedido.
-5. Se actualiza el stock.
+## Mejoras futuras
 
-## Estadísticas
+* Sistema de valoraciones.
+* Chat entre usuarios.
+* Notificaciones.
+* Aplicación móvil.
+* Recomendaciones inteligentes.
 
-Cada carta incluye:
-
-- Ventas por día
-- Ingresos por día
-
-## Diseño
-
-- Tema oscuro
-- Botones dorados
-- Responsive
-- Carrusel principal
-- Notificaciones visuales
+---
 
 ## Autor
 
 Cristian Mirón Vázquez
+
+Proyecto Fin de Ciclo DAW
+Liceo La Paz
